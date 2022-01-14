@@ -21,16 +21,36 @@ class PageScrollPercentage{
     }
 
     function settings(){
-        
+        add_settings_section('psp_first_section','Choose Scroll Type',null,'page-scroll-setting');
+        add_settings_field('psp_type','Page Scroll Progress Type',array($this,'typeHTML'),'page-scroll-setting','psp_first_section');
+        register_setting('progressplugin','psp_type',array('sanitize_callback'=> 'sanitize_text_field','default'=> '0'));
     }
 
+
+    function typeHTML(){?>
+
+        <input type="radio" name="psp_type" value="0">
+        <label >Vertical Linear Progress Bar</label><br>
+        <input type="radio"  name="psp_type" value="1">
+        <label >Horizontal Linear Progress Bar</label><br>
+        <input type="radio" name="psp_type" value="2">
+        <label >Circular Progress Bar</label>
+    <?php }
+
     function adminPage(){
-        add_options_page('page scroll setting','page_scroll','manage_options','page-scroll-setting',array($this,'addLayout'));
+        add_options_page('page scroll setting','Scroll Setting','manage_options','page-scroll-setting',array($this,'addLayout'));
     }
 
     function addLayout(){?>
         <div class="wrap">
             <h1>Page Scroll Settings</h1>
+            <form action="options.php" method="POST">
+                <?php
+                    settings_fields('progressplugin');
+                    do_settings_sections('page-scroll-setting');
+                    submit_button();
+                ?>
+            </form>
         </div>
     <?php }
 }
