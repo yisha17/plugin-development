@@ -1,5 +1,5 @@
-<div class="header">
-    <div class="progress-container">
-        <div class="progress-bar" id="myBar"></div>
-    </div>
+<div class="her">
+  <div class="progress-container">
+    <div class="progress-bar" id="progressBar"></div>
+  </div>
 </div>
