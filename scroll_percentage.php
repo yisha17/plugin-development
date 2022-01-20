@@ -19,6 +19,7 @@ class PageScrollPercentage{
         add_action('admin_menu',array($this,'adminPage'));
         add_action('admin_init',array($this,'settings'));
         add_filter('the_content',array($this,'wrapPost'));
+        add_action('wp_enqueue_scripts',array($this,'addHTML'));
     }
 
     function wrapPost($content){
@@ -30,7 +31,7 @@ class PageScrollPercentage{
     }
 
     function addHTML($content){
-        $html = include_once plugin_dir_path(__FILE__) .'circle.php';
+        $html = include_once plugin_dir_path(__FILE__) .'includes/circle.php';
         wp_enqueue_style( 'myCSS', plugin_dir_url(__FILE__) .'assets/css/style.css');
         wp_enqueue_script( 'my_custom_script', plugin_dir_url( __FILE__ ) . 'assets/js/script.js' );
 
