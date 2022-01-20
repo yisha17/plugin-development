@@ -1,7 +1,7 @@
 <?php
 /**
  * Plugin Name:       Page Scroll Percentage
- * Plugin URI:        https://contactform.com
+ * Plugin URI:        https://github.com/yisha17/plugin-development
  * Description:       A simple plugin thay shows the percentage of page scrolled
  * Version:           1.0.0
  * Requires at least: 5.2
@@ -24,11 +24,13 @@ class PageScrollPercentage{
 
     function wrapPost($content){
 
-        if( is_main_query() AND is_single()){
+        if( is_page() OR is_single()){
             return $this-> addHTML($content);
         }
         return $content;
     }
+
+
 
     function addHTML($content){
         $html = include_once plugin_dir_path(__FILE__) .'includes/circle.php';
