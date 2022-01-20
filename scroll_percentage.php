@@ -33,9 +33,9 @@ class PageScrollPercentage{
 
 
     function addHTML($content){
-        $html = include_once plugin_dir_path(__FILE__) .'includes/circle.php';
-        wp_enqueue_style( 'myCSS', plugin_dir_url(__FILE__) .'assets/css/style.css');
-        wp_enqueue_script( 'my_custom_script', plugin_dir_url( __FILE__ ) . 'assets/js/script.js' );
+        $html = include_once plugin_dir_path(__FILE__) .'includes/horizontal.php';
+        wp_enqueue_style( 'myCSS', plugin_dir_url(__FILE__) .'assets/css/horizontal.css');
+        wp_enqueue_script( 'my_custom_script', plugin_dir_url( __FILE__ ) . 'assets/js/horizontal.js' );
 
         return $content.$html;
     }
