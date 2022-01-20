@@ -18,6 +18,23 @@ class PageScrollPercentage{
     function __construct(){
         add_action('admin_menu',array($this,'adminPage'));
         add_action('admin_init',array($this,'settings'));
+        add_filter('the_content',array($this,'wrapPost'));
+    }
+
+    function wrapPost($content){
+
+        if( is_main_query() AND is_single()){
+            return $this-> addHTML($content);
+        }
+        return $content;
+    }
+
+    function addHTML($content){
+        $html = include_once plugin_dir_path(__FILE__) .'circle.php';
+        wp_enqueue_style( 'myCSS', plugin_dir_url(__FILE__) .'assets/css/style.css');
+        wp_enqueue_script( 'my_custom_script', plugin_dir_url( __FILE__ ) . 'assets/js/script.js' );
+
+        return $content.$html;
     }
 
     function settings(){
@@ -25,10 +42,10 @@ class PageScrollPercentage{
         add_settings_section('psp_second_section','choose page or post',null,'page-scroll-setting');
 
         add_settings_field('psp_type','Page Scroll Progress Type',array($this,'typeHTML'),'page-scroll-setting','psp_first_section');
-        register_setting('progressplugin','psp_type',array('sanitize_callback'=> array($this,'sanitizeType'),'default'=> '0'));
+        register_setting('progressplugin','psp_type',array('sanitize_callback'=> array($this,'sanitizeType'),'default'=> '3'));
 
         add_settings_field('psp_location','location',array($this,'locationHTML'),'page-scroll-setting','psp_second_section');
-        register_setting('progressplugin','psp_location',array('sanitize_callback'=> 'sanitize_text_field','default'=> '0'));
+        register_setting('progressplugin','psp_location',array('sanitize_callback'=> 'sanitize_text_field','default'=> '1'));
     }
 
     function sanitizeType($input){
@@ -40,9 +57,10 @@ class PageScrollPercentage{
         return $input;
     }
 
-    function locationHTML(){
-        wp_list_pages();
-    }
+    function locationHTML(){?>
+        <input type="checkbox" name="psp_location" value="1"<?php checked(get_option('psp_location'),'1')  ?>>Pages</input><br>
+        <input type="checkbox" name="psp_location" value="1"<?php checked(get_option('psp_location'),'0')  ?>>Posts</input>
+    <?php }
 
     function typeHTML(){?>
         
@@ -51,8 +69,9 @@ class PageScrollPercentage{
         <input type="radio"  name="psp_type" value="1" <?php checked(get_option('pcp_type'),'1') ?>>
         <label >Horizontal Linear Progress Bar</label><br>
         <input type="radio" name="psp_type" value="2"  <?php checked(get_option('pcp_type'),'2') ?>>
-        <label >Circular Progress Bar</label>
-
+        <label >Circular Progress Bar</label><br>
+        <input type="radio" name="psp_type" value="3"  <?php checked(get_option('pcp_type'),'3') ?>>
+        <label >None</label>
 
 
     <?php }
