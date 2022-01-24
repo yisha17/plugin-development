@@ -29,7 +29,7 @@ class PageScrollPercentage{
         
         # if both page and post selected
 
-         if (get_option('psp_post') == '1' AND get_option('psp_page') != '1'  ){
+        if (get_option('psp_post') == '1' AND get_option('psp_page') != '1'  ){
             $this->debug_to_console("number 1");
             if(is_single()){
                 $this->addHTML($content);
@@ -50,6 +50,10 @@ class PageScrollPercentage{
                 $this->addHTML($content);
             }
         }
+        if ((get_option('psp_post','1') != '1') AND (get_option('psp_page','1') != '1' )){
+            $this->debug_to_console("number 4");
+            return $content;
+        }
         return $content;
     }
 
@@ -61,11 +65,8 @@ class PageScrollPercentage{
     echo "<script>console.log('Debug Objects: " . $output . "' );</script>";
 }
 
-
-
-    function addHTML($content){
-
-        if (get_option('psp_type','0') == '0'){
+    function chooseType($content){
+         if (get_option('psp_type','0') == '0'){
             $html = include_once plugin_dir_path(__FILE__) .'includes/verticalL.php';
             wp_enqueue_style( 'myCSS', plugin_dir_url(__FILE__) .'assets/css/vertical.css');
             wp_enqueue_script( 'my_custom_script', plugin_dir_url( __FILE__ ) .'assets/js/vertical.js');
@@ -88,6 +89,34 @@ class PageScrollPercentage{
         }
         
         return $content;
+    }
+
+    function addHTML($content){
+        if (get_option('psp_post') == '1' AND get_option('psp_page') != '1'  ){
+            if(is_single()){
+                $this->chooseType($content);
+            }else{
+                return $content;
+            }
+        }
+        if (get_option('psp_post','1') == '1' AND get_option('psp_page','1') == '1' ){
+            $this->debug_to_console("number 2");
+            if(is_singular()){
+                $this->chooseType($content);
+            }
+        }
+         if ((get_option('psp_post','1') != '1') AND (get_option('psp_page','1') == '1' )){
+            $this->debug_to_console("number 3");
+            if(is_page()){
+                $this->chooseType($content);
+            }
+        }
+        if ((get_option('psp_post','1') != '1') AND (get_option('psp_page','1') != '1' )){
+            $this->debug_to_console("number 4");
+            return $content;
+        }
+        
+       
     }
 
     function settings(){
